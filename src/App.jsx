@@ -27,6 +27,7 @@ export default function App() {
   const [dolar, setDolar] = React.useState(null);
   const [sacas, setSacas] = React.useState("");
   const [precoVenda, setPrecoVenda] = React.useState("");
+  const [selectedType, setSelectedType] = React.useState("7");
   const totalVenda =
   (Number(sacas) || 0) * (Number(precoVenda) || 0);
   const [clima, setClima] = React.useState([]);
@@ -34,11 +35,19 @@ export default function App() {
 const [planilha,setPlanilha] = React.useState([])
 const [historico, setHistorico] = React.useState([])
 
-const [noticiasDinamicas, setNoticiasDinamicas] = React.useState([])
 
 
  const dados = planilha[0] || {};
  const precoAtual = Number(dados.cooabriel || 0);
+
+  const precosPorTipo = {
+  "7": Number(dados.cooabriel || 0),
+  "7/8": Number(dados.cooabriel_tipo_78 || 0),
+  "8": Number(dados.cooabriel_tipo_8 || 0),
+};
+
+const precoSimulador = precosPorTipo[selectedType] ?? precoAtual;
+  
 
 const precoAnterior = Number(
   historico[historico.length - 2]?.preco || precoAtual
@@ -145,6 +154,8 @@ const testePlanilha = linhaAtual ? linhaAtual.data : "carregando planilha";
         data: col[idx("data")],
         status: col[idx("status")],
         cooabriel: col[idx("cooabriel")],
+        cooabriel_tipo_78: col[idx("cooabriel_tipo_78")],
+        cooabriel_tipo_8: col[idx("cooabriel_tipo_8")],
         cccv: col[idx("cccv")],
         robusta: col[idx("ice_robusta")],
         noticia1: col[idx("noticia1")],
@@ -468,7 +479,29 @@ top: 14,
        <h3 style={{ marginTop: 0, marginBottom: 6, color: "#AEB4AE", display: "flex", alignItems: "center", gap: 8 }}>
   Simulador <span style={{ fontSize: 24 }}>🧮</span>
 </h3>
-        
+
+       <select
+  value={selectedType}
+  onChange={(e) => setSelectedType(e.target.value)}
+  style={{
+    width: "100%",
+    padding: "6px 10px",
+    marginTop: 6,
+    marginBottom: 4,
+    borderRadius: 10,
+    border: "1px solid rgba(255,255,255,0.08)",
+    background: "rgba(255,255,255,0.03)",
+    color: "#fff",
+    fontSize: 14,
+    outline: "none",
+    boxSizing: "border-box",
+    appearance: "none",
+  }}
+>
+  <option value="7" style={{ background: "#1a1a1a" }}>Tipo 7</option>
+  <option value="7/8" style={{ background: "#1a1a1a" }}>Tipo 7/8</option>
+  <option value="8" style={{ background: "#1a1a1a" }}>Tipo 8</option>
+</select> 
         
         
         <input
@@ -495,7 +528,7 @@ top: 14,
  type="text"
 placeholder="Valor estimado"
 value={
-  `R$ ${(Number(sacas || 1) * Number(dados.cooabriel || 0)).toLocaleString("pt-BR")}`
+  `R$ ${(Number(sacas || 1) * precoSimulador).toLocaleString("pt-BR")}`
 }
 readOnly
   style={{
