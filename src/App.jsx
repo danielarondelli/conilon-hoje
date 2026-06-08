@@ -475,7 +475,7 @@ top: 14,
 />
       
 
-      <section style={{ ...styles.card, minHeight: 118, padding: 12 }}>
+     <section style={{ ...styles.card, minHeight: 220, padding: 12, gridColumn: "1 / span 2" }}>
        <h3 style={{ marginTop: 0, marginBottom: 6, color: "#AEB4AE", display: "flex", alignItems: "center", gap: 8 }}>
   Simulador <span style={{ fontSize: 24 }}>🧮</span>
 </h3>
