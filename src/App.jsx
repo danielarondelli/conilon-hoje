@@ -29,7 +29,7 @@ export default function App() {
   const [precoVenda, setPrecoVenda] = React.useState("");
   const [selectedType, setSelectedType] = React.useState("7");
   const totalVenda =
-  (Number(sacas) || 0) * (Number(precoVenda) || 0);
+  (Number(sacas) || 0) * (Number(precoSimulador) || 0);
   const [clima, setClima] = React.useState([]);
   const [statusClima, setStatusClima] = React.useState("Buscando clima da sua região...");
 const [planilha,setPlanilha] = React.useState([])
