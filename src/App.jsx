@@ -34,7 +34,7 @@ export default function App() {
   const [statusClima, setStatusClima] = React.useState("Buscando clima da sua região...");
 const [planilha,setPlanilha] = React.useState([])
 const [historico, setHistorico] = React.useState([])
-
+const [noticiasDinamicas, setNoticiasDinamicas] = React.useState(noticias);
 
 
  const dados = planilha[0] || {};
