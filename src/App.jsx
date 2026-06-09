@@ -11,7 +11,7 @@ import {
   CartesianGrid,
 } from "recharts";
 
-import logoConilon from "./assets/logo-conilon.jpg.jpeg";
+import logoConilon from "./assets/logo-conilon.jpg.jpeg"; 
 
 
 
