@@ -42,8 +42,10 @@ const [noticiasDinamicas, setNoticiasDinamicas] = React.useState(noticias);
 
   const precosPorTipo = {
   "7": Number(dados.cooabriel || 0),
-  "7/8": Number(dados.cooabriel_tipo_78 || 0),
-  "8": Number(dados.cooabriel_tipo_8 || 0),
+  "7/8": parseFloat(dados.cooabriel_tipo_78?.replace("R$","").replace(".","").replace(",",".").trim() || 0),
+
+"8": parseFloat(dados.cooabriel_tipo_8?.replace("R$","").replace(".","").replace(",",".").trim() || 0),
+    
 };
 
 const precoSimulador = precosPorTipo[selectedType] ?? precoAtual;
