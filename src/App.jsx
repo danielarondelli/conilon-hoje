@@ -495,7 +495,7 @@ top: 14,
     fontSize: 14,
     outline: "none",
     boxSizing: "border-box",
-    appearance: "auto",
+    appearance: "none",
   }}
 >
   <option value="7" style={{ background: "#1a1a1a" }}>Tipo 7</option>
