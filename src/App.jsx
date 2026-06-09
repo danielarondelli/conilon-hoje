@@ -490,7 +490,7 @@ top: 14,
     marginTop: 2
   }}
 >
-  Simule diferentes tipos de café
+  Escolha o tipo do seu café ↓
 </p>
 
 <select
