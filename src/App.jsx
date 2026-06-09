@@ -482,7 +482,18 @@ top: 14,
   Simulador <span style={{ fontSize: 24 }}>🧮</span>
 </h3>
 
-       <select
+<p
+  style={{
+    fontSize: 11,
+    color: "rgba(255,255,255,0.45)",
+    marginBottom: 6,
+    marginTop: 2
+  }}
+>
+  Simule diferentes tipos de café
+</p>
+
+<select
   value={selectedType}
   onChange={(e) => setSelectedType(e.target.value)}
   style={{
