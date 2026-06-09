@@ -490,7 +490,7 @@ top: 14,
     marginTop: 2
   }}
 >
-  Escolha o tipo do seu café ↓
+  Escolha o tipo do seu café ⬇
 </p>
 
 <select
