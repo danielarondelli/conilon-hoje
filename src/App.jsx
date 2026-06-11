@@ -368,7 +368,22 @@ top: 14,
 </div>
 </>
   </h1>
+</h1>
 
+<small
+  style={{
+    color: "#8A8A80",
+    fontSize: 11,
+    letterSpacing: 0.2,
+    lineHeight: 1.5,
+    position: "relative",
+    zIndex: 2,
+  }}
+>
+  Referência diária atualizada após 10h
+</small>
+
+</div>
   
 </div>
 
@@ -455,7 +470,7 @@ top: 14,
         opacity: 0.8,
       }}
     >
-      Atualizada após 17h
+      Referência diária atualizada após 17h
     </span>
   </div>
 </>
