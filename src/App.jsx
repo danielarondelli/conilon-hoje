@@ -896,7 +896,7 @@ function Card({ titulo, valor, subtitulo, cor, corFundo, tamanhoValor, estiloExt
 const styles = {
   page: {
   background: "linear-gradient(180deg, #102117 0%, #18261D 100%)",
-  minHeight: "100vh",
+  minHeight: "100dvh",
   padding: "18px 16px 40px",
   fontFamily: "Arial",
   color: "#F0EDE6",
