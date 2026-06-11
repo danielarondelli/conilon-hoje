@@ -167,16 +167,16 @@ const testePlanilha = linhaAtual ? linhaAtual.data : "carregando planilha";
         robusta_cccv_ano_anterior: col[idx("robusta_cccv_ano_anterior")],
         arabica_cccv: col[idx("arabica_cccv")],
         leitura_mercado: col[idx("leitura_mercado")],
-        data_grafico: col[idx("data_grafico")],
-        preco_cooabriel_grafico: col[idx("preco_cooabriel_grafico")],
+        data_grafico_cooabriel: col[idx("data_grafico_cooabriel")],
+valor_grafico_cooabriel: col[idx("valor_grafico_cooabriel")],
       }));
 
-      const dadosHistorico = tabela
-  .filter((item) => item.data_grafico && item.preco_cooabriel_grafico)
+     const dadosHistorico = tabela
+  .filter((item) => item.data_grafico_cooabriel && item.valor_grafico_cooabriel)
   .map((item) => ({
-    dia: item.data_grafico.slice(0, 5),
+    dia: item.data_grafico_cooabriel.slice(0, 5),
     preco: Number(
-      String(item.preco_cooabriel_grafico)
+      String(item.valor_grafico_cooabriel)
         .replace("R$", "")
         .replace(/\./g, "")
         .replace(",", ".")
@@ -184,7 +184,6 @@ const testePlanilha = linhaAtual ? linhaAtual.data : "carregando planilha";
     ),
   }))
   .filter((item) => !isNaN(item.preco));
-
 const noticiasTabela = [
   { cor: "#6BCB77", texto: tabela[0]?.noticia1 || "" },
   { cor: "#6BCB77", texto: tabela[0]?.noticia2 || "" },
@@ -288,7 +287,7 @@ const resumoClima =
   
 }}>
   <ResponsiveContainer width="100%" height="100%">
-    <LineChart data={historico.slice(-5)} margin={{ top: 8, right: 0, left: 0, bottom: 8 }}>
+    <LineChart data={historico.slice(-7)} margin={{ top: 8, right: 0, left: 0, bottom: 8 }}>
   <YAxis hide domain={["dataMin - 10", "dataMax + 10"]} />
   <XAxis dataKey="dia" tick={{ fill: "#9AA89D", fontSize: 10 }} axisLine={false} tickLine={false} padding={{ left: 12, right: 12 }}/>
   <Tooltip />
