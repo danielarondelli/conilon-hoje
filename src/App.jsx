@@ -902,6 +902,7 @@ const styles = {
   color: "#F0EDE6",
   maxWidth: 520,
 margin: "0 auto",
+    boxShadow: "0 0 0 100vmax #102117",
 },
 
 headerTop: {
