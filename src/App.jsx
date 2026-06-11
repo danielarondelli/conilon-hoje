@@ -383,7 +383,7 @@ top: 14,
   Referência diária atualizada após 10h
 </small>
 
-</div>
+
   
 </div>
 
