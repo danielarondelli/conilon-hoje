@@ -636,7 +636,7 @@ fontSize: 11
           letterSpacing: 0.5,
         }}
       >
-        CONILON · MAI 2026 VS. MAI 2025
+        CONILON · JUN 2026 VS. JUN 2025
       </div>
 
       <div
