@@ -39,7 +39,8 @@ const [noticiasDinamicas, setNoticiasDinamicas] = React.useState(noticias);
 
  const dados = planilha[0] || {};
  const precoAtual = Number(dados.cooabriel || 0);
-
+ 
+const precoAnoAnterior = Number(dados.cooabriel_ano_anterior || 0);
   const precosPorTipo = {
   "7": Number(dados.cooabriel || 0),
   "7/8": parseFloat(dados.cooabriel_tipo_78?.replace("R$","").replace(".","").replace(",",".").trim() || 0),
