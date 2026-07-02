@@ -674,7 +674,9 @@ fontSize: 11
           fontSize: 14,
         }}
       >
-        -38,5%
+       {precoAnoAnterior > 0
+  ? `${(((precoAtual - precoAnoAnterior) / precoAnoAnterior) * 100).toFixed(1).replace(".", ",")}%`
+  : "0,0%"}
       </div>
     </div>
 
