@@ -239,6 +239,16 @@ const resumoClima =
     ? "Chuva fraca e frequente na região."
     : "Janela mais seca, com pouca chuva prevista.";
 
+const meses = [
+  "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
+  "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
+];
+
+const hoje = new Date();
+const mesComparativo = meses[hoje.getMonth()];
+const anoAtual = hoje.getFullYear();
+const anoAnterior = anoAtual - 1;
+
   return (
     <div style={styles.page}>
       
@@ -651,7 +661,7 @@ fontSize: 11
           letterSpacing: 0.5,
         }}
       >
-        CONILON · JUN 2026 VS. JUN 2025
+        {`CONILON • ${mesComparativo} ${anoAtual} VS. ${mesComparativo} ${anoAnterior}`}
       </div>
 
       <div
