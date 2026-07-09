@@ -13,7 +13,9 @@ import {
 
 import logoConilon from "./assets/logo-conilon.jpg.jpeg"; 
 
-
+import PremiumMercadoExterno from "./pages/PremiumMercadoExterno";
+import PremiumNoticias from "./pages/premium/PremiumNoticias";
+import PremiumPreview from "./pages/premium/PremiumPreview";
 
 const noticias = [
   { categoria: "Geopolítica", texto: "Tensão no Estreito de Ormuz pressiona fertilizantes", cor: "#b84a4a" },
@@ -23,7 +25,7 @@ const noticias = [
 ];
 
 export default function App() {
-  
+ return <PremiumMercadoExterno />; 
   const [dolar, setDolar] = React.useState(null);
   const [sacas, setSacas] = React.useState("");
   const [precoVenda, setPrecoVenda] = React.useState("");
