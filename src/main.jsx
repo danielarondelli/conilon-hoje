@@ -9,9 +9,7 @@ import {
 
 import App from "./App.jsx";
 import PremiumPreview from "./pages/premium/PremiumPreview.jsx";
-function PremiumHome() {
-  return <PremiumTermometroMercado />;
-}
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
