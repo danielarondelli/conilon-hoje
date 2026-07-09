@@ -1,7 +1,7 @@
 import React from "react";
 
 import PremiumCooabrielClaude from "./PremiumCooabrielClaude.jsx";
-import PremiumMercadoExterno from "../PremiumMercadoExterno.jsx";
+
 import PremiumTermometroMercado from "./PremiumTermometroMercado.jsx";
 import PremiumNoticias from "./PremiumNoticias.jsx";
 
@@ -44,9 +44,7 @@ export default function PremiumPreview() {
         <PremiumCooabrielClaude />
       </div>
 
-      <div style={styles.phoneColumn}>
-        <PremiumMercadoExterno />
-      </div>
+      
 
       <div style={styles.phoneColumn}>
         <PremiumTermometroMercado />
