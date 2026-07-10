@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Analytics } from "@vercel/analytics/react";
 import {
   BrowserRouter,
   Routes,
@@ -24,5 +25,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/premium" element={<PremiumCooabriel />} />
       </Routes>
     </BrowserRouter>
+    <Analytics />
   </React.StrictMode>
 );
