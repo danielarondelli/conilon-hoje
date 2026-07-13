@@ -69,9 +69,12 @@ export default function PremiumPreview() {
           ref={(elemento) => {
             slideRefs.current[0] = elemento;
           }}
-          style={styles.phoneColumn}
+          style={styles.paginaPremium}
         >
-          <PremiumCooabrielClaude />
+          <div style={styles.conteudoPremium}>
+            <PremiumCooabrielClaude />
+          </div>
+
           {renderizarIndicador(0)}
         </div>
 
@@ -79,9 +82,12 @@ export default function PremiumPreview() {
           ref={(elemento) => {
             slideRefs.current[1] = elemento;
           }}
-          style={styles.phoneColumn}
+          style={styles.paginaPremium}
         >
-          <PremiumTermometroMercado />
+          <div style={styles.conteudoPremium}>
+            <PremiumTermometroMercado />
+          </div>
+
           {renderizarIndicador(1)}
         </div>
 
@@ -89,9 +95,12 @@ export default function PremiumPreview() {
           ref={(elemento) => {
             slideRefs.current[2] = elemento;
           }}
-          style={styles.phoneColumn}
+          style={styles.paginaPremium}
         >
-          <PremiumNoticias />
+          <div style={styles.conteudoPremium}>
+            <PremiumNoticias />
+          </div>
+
           {renderizarIndicador(2)}
         </div>
       </div>
@@ -113,13 +122,13 @@ const styles = {
 
   carousel: {
     display: "flex",
-    gap: "18px",
     width: "100%",
     alignItems: "flex-start",
     overflowX: "auto",
     overflowY: "hidden",
     margin: 0,
     padding: 0,
+    gap: 0,
     background: "#07110c",
     scrollSnapType: "x mandatory",
     scrollBehavior: "smooth",
@@ -127,17 +136,29 @@ const styles = {
     scrollbarWidth: "none",
   },
 
-  phoneColumn: {
+  paginaPremium: {
     position: "relative",
-    width: "390px",
-    minWidth: "390px",
-    maxWidth: "390px",
-    flex: "0 0 390px",
+    width: "100vw",
+    minWidth: "100vw",
+    maxWidth: "100vw",
+    flex: "0 0 100vw",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
     margin: 0,
     padding: 0,
     boxSizing: "border-box",
     scrollSnapAlign: "start",
     scrollSnapStop: "always",
+  },
+
+  conteudoPremium: {
+    width: "100%",
+    maxWidth: "390px",
+    minWidth: 0,
+    margin: 0,
+    padding: 0,
+    boxSizing: "border-box",
   },
 
   indicador: {
