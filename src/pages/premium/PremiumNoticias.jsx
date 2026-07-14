@@ -2,7 +2,7 @@
 // Card 4 — Notícias do Mercado | Conilon Hoje
 // src/pages/premium/PremiumNoticias.jsx
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logoConilon from "../../assets/logo-conilon.jpg.jpeg";
 import seuConilon from "../../assets/mascotes/seu_conilon_sem_fundo.png";
 const CSV_URL =
@@ -136,6 +136,13 @@ export default function PremiumNoticias() {
   const [erro, setErro] = useState(null);
   const [conversaPremium, setConversaPremium] = useState("");
 
+  const conversaCarouselRef = useRef(null);
+  const conversaSlideRefs = useRef([]);
+  const scrollConversaTimerRef = useRef(null);
+
+  const [telaConversaAtiva, setTelaConversaAtiva] = useState(0);
+  const [alturaConversa, setAlturaConversa] = useState(null);
+
   const [hoje, setHoje] = useState("");
   useEffect(() => {
     async function carregarDados() {
@@ -193,6 +200,113 @@ setCarregando(false);
     }
     carregarDados();
   }, []);
+
+  function medirAlturaConversa(index) {
+    const slide = conversaSlideRefs.current[index];
+
+    if (!slide) return;
+
+    const novaAltura = Math.ceil(slide.scrollHeight);
+
+    if (novaAltura > 0) {
+      setAlturaConversa(novaAltura);
+    }
+  }
+
+  useEffect(() => {
+    const primeiroFrame = window.requestAnimationFrame(() => {
+      medirAlturaConversa(telaConversaAtiva);
+    });
+
+    const segundaMedicao = window.setTimeout(() => {
+      medirAlturaConversa(telaConversaAtiva);
+    }, 200);
+
+    return () => {
+      window.cancelAnimationFrame(primeiroFrame);
+      window.clearTimeout(segundaMedicao);
+    };
+  }, [telaConversaAtiva, conversaPremium]);
+
+  useEffect(() => {
+    const slideAtivo = conversaSlideRefs.current[telaConversaAtiva];
+
+    if (!slideAtivo || typeof ResizeObserver === "undefined") {
+      return undefined;
+    }
+
+    const observador = new ResizeObserver(() => {
+      medirAlturaConversa(telaConversaAtiva);
+    });
+
+    observador.observe(slideAtivo);
+
+    return () => {
+      observador.disconnect();
+    };
+  }, [telaConversaAtiva, conversaPremium]);
+
+  useEffect(() => {
+    function medirAoRedimensionar() {
+      medirAlturaConversa(telaConversaAtiva);
+    }
+
+    window.addEventListener("resize", medirAoRedimensionar);
+
+    return () => {
+      window.removeEventListener("resize", medirAoRedimensionar);
+    };
+  }, [telaConversaAtiva]);
+
+  useEffect(() => {
+    return () => {
+      if (scrollConversaTimerRef.current) {
+        window.clearTimeout(scrollConversaTimerRef.current);
+      }
+    };
+  }, []);
+
+  function identificarTelaConversa() {
+    const carousel = conversaCarouselRef.current;
+
+    if (!carousel || carousel.clientWidth === 0) return;
+
+    const indice = Math.round(carousel.scrollLeft / carousel.clientWidth);
+    const indiceSeguro = Math.max(0, Math.min(indice, 1));
+
+    setTelaConversaAtiva(indiceSeguro);
+
+    window.requestAnimationFrame(() => {
+      medirAlturaConversa(indiceSeguro);
+    });
+  }
+
+  function acompanharScrollConversa() {
+    if (scrollConversaTimerRef.current) {
+      window.clearTimeout(scrollConversaTimerRef.current);
+    }
+
+    scrollConversaTimerRef.current = window.setTimeout(() => {
+      identificarTelaConversa();
+    }, 100);
+  }
+
+  function irParaTelaConversa(index) {
+    const carousel = conversaCarouselRef.current;
+
+    if (!carousel || carousel.clientWidth === 0) return;
+
+    setTelaConversaAtiva(index);
+
+    carousel.scrollTo({
+      left: index * carousel.clientWidth,
+      behavior: "smooth",
+    });
+
+    window.setTimeout(() => {
+      medirAlturaConversa(index);
+    }, 320);
+  }
 
   async function gerarLeituras(noticiasLista) {
     const novasLeituras = {};
@@ -416,84 +530,136 @@ minHeight: "100vh", borderRadius: "16px", border: "none", overflow: "hidden", ma
   </p>
 
   <div
+  ref={conversaCarouselRef}
+  onScroll={acompanharScrollConversa}
+  onTouchStart={(e) => e.stopPropagation()}
+  onTouchMove={(e) => e.stopPropagation()}
+  onMouseDown={(e) => e.stopPropagation()}
   style={{
     display: "flex",
+    alignItems: "flex-start",
     overflowX: "auto",
+    overflowY: "hidden",
     scrollSnapType: "x mandatory",
-    gap: "16px",
+    scrollBehavior: "smooth",
+    gap: 0,
     marginTop: "18px",
     paddingBottom: "8px",
+    height: alturaConversa ? `${alturaConversa}px` : "auto",
+    transition: "height 0.28s ease",
+    WebkitOverflowScrolling: "touch",
+    scrollbarWidth: "none",
+    overscrollBehaviorX: "contain",
+    touchAction: "pan-x",
   }}
 >
   {/* TELA 1 — CHAMADA DO MASCOTE */}
   <div
+    ref={(elemento) => {
+      conversaSlideRefs.current[0] = elemento;
+    }}
     style={{
+      width: "100%",
       minWidth: "100%",
+      maxWidth: "100%",
+      flex: "0 0 100%",
+      boxSizing: "border-box",
       scrollSnapAlign: "start",
+      position: "relative",
+      minHeight: "190px",
       display: "flex",
-      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      textAlign: "center",
-      minHeight: "190px",
+      padding: "4px 0 8px",
     }}
   >
     <img
-  src={seuConilon}
-  alt="Seu Conilon"
-  style={{
-    width: "125px",
-    height: "auto",
-    marginBottom: "10px",
-    marginLeft: "-60px",
-  }}
-/>
+      src={seuConilon}
+      alt="Seu Conilon"
+      style={{
+        width: "125px",
+        height: "auto",
+        marginLeft: "-52px",
+      }}
+    />
 
-    <div
-  style={{
-    position: "relative",
-top: "-160px",
-left: "68px",
+    <button
+      type="button"
+      onClick={() => irParaTelaConversa(1)}
+      aria-label="Abrir análise do dia"
+      style={{
+        position: "absolute",
+        top: "8px",
+        left: "calc(50% + 10px)",
+        background: "#f5f0e8",
+        color: "#1A2E1A",
+        padding: "5px 8px",
+        borderRadius: "8px",
+        fontSize: "8px",
+        fontWeight: "700",
+        lineHeight: 1.45,
+        maxWidth: "105px",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.18)",
+        border: "none",
+        cursor: "pointer",
+        textAlign: "left",
+      }}
+    >
+      Quer saber o que isso significa?
+      <br />
+      Arraste que eu te explico. →
 
-    display: "inline-block",
-    background: "#f5f0e8",
-    color: "#1A2E1A",
-    padding: "5px 8px",
-    borderRadius: "8px",
-    fontSize: "8px",
-    fontWeight: "700",
-    lineHeight: "1.45",
-    maxWidth: "105px",
-    marginBottom: "16px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.18)",
-  }}
->
-  Quer saber o que isso significa?
-  <br />
-  Arraste que eu te explico. →
-
-  <div
-    style={{
-      position: "absolute",
-      bottom: "-7px",
-      right: "42px",
-      width: 0,
-      height: 0,
-      borderLeft: "10px solid transparent",
-      borderRight: "10px solid transparent",
-      borderTop: "8px solid #f5f0e8",
-    }}
-  />
-</div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-7px",
+          left: "18px",
+          width: 0,
+          height: 0,
+          borderLeft: "10px solid transparent",
+          borderRight: "10px solid transparent",
+          borderTop: "8px solid #f5f0e8",
+        }}
+      />
+    </button>
   </div>
 
   {/* TELA 2 — CONVERSA DO DIA */}
   <div
+    ref={(elemento) => {
+      conversaSlideRefs.current[1] = elemento;
+    }}
     style={{
+      width: "100%",
       minWidth: "100%",
+      maxWidth: "100%",
+      flex: "0 0 100%",
+      boxSizing: "border-box",
       scrollSnapAlign: "start",
+      padding: "0 2px 4px",
     }}
   >
+    <button
+      type="button"
+      onClick={() => irParaTelaConversa(0)}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "6px",
+        margin: "0 0 12px 0",
+        padding: "6px 10px",
+        borderRadius: "999px",
+        border: "1px solid rgba(200,150,60,0.28)",
+        background: "rgba(200,150,60,0.08)",
+        color: "#C8963C",
+        fontSize: "11px",
+        fontWeight: 800,
+        cursor: "pointer",
+      }}
+    >
+      ← Voltar ao Seu Conilon
+    </button>
+
     <p
       style={{
         fontSize: "13px",
@@ -505,6 +671,37 @@ left: "68px",
       {conversaPremium || "A conversa premium do dia ainda não foi preenchida."}
     </p>
   </div>
+</div>
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
+    marginTop: "8px",
+  }}
+>
+  {[0, 1].map((index) => (
+    <button
+      key={index}
+      type="button"
+      onClick={() => irParaTelaConversa(index)}
+      aria-label={index === 0 ? "Mostrar Seu Conilon" : "Mostrar análise do dia"}
+      style={{
+        width: "8px",
+        height: "8px",
+        padding: 0,
+        border: "none",
+        borderRadius: "50%",
+        cursor: "pointer",
+        background:
+          telaConversaAtiva === index
+            ? "#C8963C"
+            : "rgba(245,240,232,0.32)",
+      }}
+    />
+  ))}
 </div>
 
 

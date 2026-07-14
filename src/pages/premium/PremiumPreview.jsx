@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import PremiumCooabrielClaude from "./PremiumCooabrielClaude.jsx";
 import PremiumTermometroMercado from "./PremiumTermometroMercado.jsx";
@@ -7,6 +7,11 @@ import PremiumNoticias from "./PremiumNoticias.jsx";
 export default function PremiumPreview() {
   const carouselRef = useRef(null);
   const slideRefs = useRef([]);
+  const conteudoRefs = useRef([]);
+  const temporizadorScrollRef = useRef(null);
+
+  const [paginaAtiva, setPaginaAtiva] = useState(0);
+  const [alturaAtiva, setAlturaAtiva] = useState(null);
 
   useEffect(() => {
     const bodyMarginAnterior = document.body.style.margin;
@@ -31,6 +36,106 @@ export default function PremiumPreview() {
     };
   }, []);
 
+  function medirPagina(index) {
+    const conteudo = conteudoRefs.current[index];
+
+    if (!conteudo) return;
+
+    const alturaReal = Math.ceil(conteudo.scrollHeight);
+
+    if (alturaReal > 0) {
+      setAlturaAtiva(alturaReal + 2);
+    }
+  }
+
+  useEffect(() => {
+    const primeiroFrame = window.requestAnimationFrame(() => {
+      medirPagina(0);
+    });
+
+    const segundaMedicao = window.setTimeout(() => {
+      medirPagina(0);
+    }, 250);
+
+    return () => {
+      window.cancelAnimationFrame(primeiroFrame);
+      window.clearTimeout(segundaMedicao);
+    };
+  }, []);
+
+  useEffect(() => {
+    medirPagina(paginaAtiva);
+
+    const conteudoAtual = conteudoRefs.current[paginaAtiva];
+
+    if (!conteudoAtual || typeof ResizeObserver === "undefined") {
+      return undefined;
+    }
+
+    const observador = new ResizeObserver(() => {
+      medirPagina(paginaAtiva);
+    });
+
+    observador.observe(conteudoAtual);
+
+    return () => {
+      observador.disconnect();
+    };
+  }, [paginaAtiva]);
+
+  useEffect(() => {
+    function medirNovamente() {
+      medirPagina(paginaAtiva);
+    }
+
+    window.addEventListener("resize", medirNovamente);
+
+    return () => {
+      window.removeEventListener("resize", medirNovamente);
+    };
+  }, [paginaAtiva]);
+
+  useEffect(() => {
+    return () => {
+      if (temporizadorScrollRef.current) {
+        window.clearTimeout(temporizadorScrollRef.current);
+      }
+    };
+  }, []);
+
+  function identificarPaginaAtiva() {
+    const carousel = carouselRef.current;
+
+    if (!carousel || carousel.clientWidth === 0) return;
+
+    const indiceCalculado = Math.round(
+      carousel.scrollLeft / carousel.clientWidth
+    );
+
+    const ultimoIndice = slideRefs.current.length - 1;
+
+    const indiceSeguro = Math.max(
+      0,
+      Math.min(indiceCalculado, ultimoIndice)
+    );
+
+    setPaginaAtiva(indiceSeguro);
+
+    window.requestAnimationFrame(() => {
+      medirPagina(indiceSeguro);
+    });
+  }
+
+  function acompanharScroll() {
+    if (temporizadorScrollRef.current) {
+      window.clearTimeout(temporizadorScrollRef.current);
+    }
+
+    temporizadorScrollRef.current = window.setTimeout(() => {
+      identificarPaginaAtiva();
+    }, 120);
+  }
+
   function irParaPagina(index) {
     const carousel = carouselRef.current;
     const slide = slideRefs.current[index];
@@ -41,6 +146,11 @@ export default function PremiumPreview() {
       left: slide.offsetLeft,
       behavior: "smooth",
     });
+
+    window.setTimeout(() => {
+      setPaginaAtiva(index);
+      medirPagina(index);
+    }, 350);
   }
 
   function renderizarIndicador(indiceAtivo) {
@@ -66,14 +176,30 @@ export default function PremiumPreview() {
 
   return (
     <div style={styles.pagina}>
-      <div ref={carouselRef} style={styles.carousel}>
+      <div
+        ref={carouselRef}
+        onScroll={acompanharScroll}
+        style={{
+          ...styles.carousel,
+          ...(alturaAtiva
+            ? {
+                height: `${alturaAtiva}px`,
+              }
+            : {}),
+        }}
+      >
         <div
           ref={(elemento) => {
             slideRefs.current[0] = elemento;
           }}
           style={styles.paginaPremium}
         >
-          <div style={styles.conteudoPremium}>
+          <div
+            ref={(elemento) => {
+              conteudoRefs.current[0] = elemento;
+            }}
+            style={styles.conteudoPremium}
+          >
             <PremiumCooabrielClaude />
           </div>
 
@@ -86,7 +212,12 @@ export default function PremiumPreview() {
           }}
           style={styles.paginaPremium}
         >
-          <div style={styles.conteudoPremium}>
+          <div
+            ref={(elemento) => {
+              conteudoRefs.current[1] = elemento;
+            }}
+            style={styles.conteudoPremium}
+          >
             <PremiumTermometroMercado />
           </div>
 
@@ -99,7 +230,12 @@ export default function PremiumPreview() {
           }}
           style={styles.paginaPremium}
         >
-          <div style={styles.conteudoPremium}>
+          <div
+            ref={(elemento) => {
+              conteudoRefs.current[2] = elemento;
+            }}
+            style={styles.conteudoPremium}
+          >
             <PremiumNoticias />
           </div>
 
@@ -138,6 +274,7 @@ const styles = {
     scrollBehavior: "smooth",
     WebkitOverflowScrolling: "touch",
     scrollbarWidth: "none",
+    transition: "height 0.28s ease",
   },
 
   paginaPremium: {
