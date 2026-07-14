@@ -16,9 +16,11 @@ export default function PremiumPreview() {
       document.documentElement.style.background;
 
     document.body.style.margin = "0";
-    document.body.style.background = "#07110c";
+    document.body.style.background =
+      "linear-gradient(180deg, #102117 0%, #18261D 100%)";
     document.body.style.overflowX = "hidden";
-    document.documentElement.style.background = "#07110c";
+    document.documentElement.style.background =
+      "linear-gradient(180deg, #102117 0%, #18261D 100%)";
 
     return () => {
       document.body.style.margin = bodyMarginAnterior;
@@ -114,7 +116,8 @@ const styles = {
     minHeight: "100vh",
     margin: 0,
     padding: 0,
-    background: "#07110c",
+    background:
+      "linear-gradient(180deg, #102117 0%, #18261D 100%)",
     fontFamily: "'Inter', 'Segoe UI', sans-serif",
     boxSizing: "border-box",
     overflow: "hidden",
@@ -129,7 +132,8 @@ const styles = {
     margin: 0,
     padding: 0,
     gap: 0,
-    background: "#07110c",
+    background:
+      "linear-gradient(180deg, #102117 0%, #18261D 100%)",
     scrollSnapType: "x mandatory",
     scrollBehavior: "smooth",
     WebkitOverflowScrolling: "touch",
