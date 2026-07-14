@@ -22,7 +22,7 @@ const noticias = [
   { categoria: "Safra", texto: "Produtores seguram vendas aguardando preços melhores", cor: "#b8892f" },
 ];
 
-export default function App() {
+export default function App({ onAbrirPremium }) {
   
   const [dolar, setDolar] = React.useState(null);
   const [sacas, setSacas] = React.useState("");
@@ -853,21 +853,31 @@ fontSize: 11
         </p>
       </section>
 
-      <section style={styles.ctaBox}>
-        <h2 style={{ color: "#9AA09A" }}>
-  Receba a análise semanal do Conilon
-</h2>
-        
-       <a
-  href="https://wa.me/5527999999999?text=Quero%20receber%20a%20análise%20semanal%20do%20Conilon"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{ textDecoration: "none" }}
->
-  <button style={styles.button}>
-    Entrar na lista da Newsletter pelo WhatsApp
-  </button>
-</a>
+      <section style={styles.premiumEntryCard}>
+        <div style={styles.premiumEntryBadge}>
+          ⭐ CONILON HOJE PREMIUM
+        </div>
+
+        <h2 style={styles.premiumEntryTitle}>
+          O que tudo isso significa para o preço do seu café?
+        </h2>
+
+        <p style={styles.premiumEntryText}>
+          Transforme números, notícias e indicadores em decisões mais seguras
+          sobre o momento de vender, esperar ou acompanhar o mercado do café.
+        </p>
+
+        <p style={styles.premiumEntryLimited}>
+          Período de acesso gratuito por tempo limitado.
+        </p>
+
+        <button
+          type="button"
+          onClick={onAbrirPremium}
+          style={styles.premiumEntryButton}
+        >
+          🚀 Entrar no Premium
+        </button>
       </section>
     </div>
   );
@@ -1062,4 +1072,66 @@ cursor: "pointer",
 width: "100%",
 boxShadow: "0 8px 20px rgba(76,175,107,0.22)",
 },
+
+  premiumEntryCard: {
+    marginTop: 18,
+    padding: "24px 20px",
+    borderRadius: 24,
+    background:
+      "linear-gradient(155deg, rgba(32,58,42,0.98) 0%, rgba(17,33,24,0.98) 60%, rgba(10,24,17,0.98) 100%)",
+    border: "1px solid rgba(200,169,110,0.30)",
+    boxShadow: "0 18px 45px rgba(0,0,0,0.34)",
+    textAlign: "center",
+  },
+
+  premiumEntryBadge: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "8px 16px",
+    borderRadius: 999,
+    background: "rgba(200,169,110,0.12)",
+    border: "1px solid rgba(200,169,110,0.28)",
+    color: "#C8A96E",
+    fontSize: 13,
+    fontWeight: 800,
+    letterSpacing: "0.08em",
+    marginBottom: 16,
+  },
+
+  premiumEntryTitle: {
+    margin: "0 0 12px",
+    color: "#F5F0E8",
+    fontSize: 25,
+    lineHeight: 1.2,
+    letterSpacing: -0.5,
+  },
+
+  premiumEntryText: {
+    margin: "0 auto 12px",
+    maxWidth: 430,
+    color: "rgba(245,240,232,0.76)",
+    fontSize: 14,
+    lineHeight: 1.6,
+  },
+
+  premiumEntryLimited: {
+    margin: "0 0 16px",
+    color: "#C8A96E",
+    fontSize: 12,
+    fontWeight: 700,
+  },
+
+  premiumEntryButton: {
+    width: "100%",
+    border: "none",
+    borderRadius: 18,
+    padding: "15px 18px",
+    background: "linear-gradient(135deg, #C8A96E 0%, #A98242 100%)",
+    color: "#102117",
+    fontSize: 16,
+    fontWeight: 800,
+    cursor: "pointer",
+    boxShadow: "0 10px 24px rgba(200,169,110,0.24)",
+  },
 };

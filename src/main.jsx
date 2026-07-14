@@ -7,21 +7,14 @@ import {
   Route
 } from "react-router-dom";
 
-import App from "./App.jsx";
+import ConilonHojeIntegrado from "./ConilonHojeIntegrado.jsx";
 import PremiumPreview from "./pages/premium/PremiumPreview.jsx";
-function PremiumHome() {
-  return (
-    <div style={{ padding: 20, color: "#111", fontSize: 24 }}>
-      Premium em construção
-    </div>
-  );
-}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<ConilonHojeIntegrado />} />
         <Route path="/premium" element={<PremiumPreview />} />
       </Routes>
     </BrowserRouter>
