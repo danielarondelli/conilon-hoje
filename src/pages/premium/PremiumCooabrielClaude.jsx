@@ -724,7 +724,7 @@ const indiceCooabriel = cabecalho.findIndex(
 >
   {/* SLIDE 1 — GRÁFICO 30 DIAS */}
   {valores30d.length > 0 && (
-    <section style={{ ...styles.card, minWidth: "100%", scrollSnapAlign: "start" }}>
+    <section style={{ ...styles.card, width: "100%", minWidth: "100%", maxWidth: "100%", flex: "0 0 100%", boxSizing: "border-box", scrollSnapAlign: "start" }}>
       <p style={styles.label}>Onde o preço está hoje? · 30 dias</p>
 
       <svg width="320" height="155" viewBox="0 0 320 155">
@@ -821,7 +821,7 @@ const indiceCooabriel = cabecalho.findIndex(
   )}
 
   {/* SLIDE 2 — MARGEM OPERACIONAL */}
-  <section style={{ ...styles.card, minWidth: "100%", scrollSnapAlign: "start" }}>
+  <section style={{ ...styles.card, width: "100%", minWidth: "100%", maxWidth: "100%", flex: "0 0 100%", boxSizing: "border-box", scrollSnapAlign: "start" }}>
     <p style={styles.label}>Margem Operacional · Tendência</p>
 
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, marginTop: 16, marginBottom: 16 }}>
@@ -873,7 +873,7 @@ const indiceCooabriel = cabecalho.findIndex(
   </section>
 
   {/* SLIDE 3 — COMPARAÇÃO COM MÉDIA RECENTE */}
-  <section style={{ ...styles.card, minWidth: "100%", scrollSnapAlign: "start" }}>
+  <section style={{ ...styles.card, width: "100%", minWidth: "100%", maxWidth: "100%", flex: "0 0 100%", boxSizing: "border-box", scrollSnapAlign: "start" }}>
     <div style={styles.insightBox}>
       <p style={styles.insightTitle}>Comparação com a média recente</p>
 
